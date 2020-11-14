@@ -1,0 +1,9 @@
+{
+  "name": "find-dot-git",
+  "version": "1.0.0",
+  "description": "A user friendly finder for .git folders",
+  "main": "index.js",
+  "repository": "git@github.com:leobastiani/find-dot-git.git",
+  "author": "Leonardo Guarnieri de Bastiani <leogbastiani@gmail.com>",
+  "license": "GNUv3"
+}
