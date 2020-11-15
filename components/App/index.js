@@ -9,7 +9,7 @@ export default function App() {
         <Text>find-dot-git</Text>
       </Box>
       <Text>Status: </Text>
-      <Text color="green">Running</Text>
+      <Text color="green" marginRight={1}>Running</Text>
       <Text>{figures.circleFilled}</Text>
     </Box>
   );
