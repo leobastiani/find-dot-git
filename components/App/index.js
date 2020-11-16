@@ -8,6 +8,7 @@ import { GitChecker } from "../../services/GitChecker";
 import { GitGlober } from "../../services/GitGlober";
 import path from "path";
 import { CachedGlobFactory } from "../../services/CachedGlobFactory";
+import Timer, { useNowStore } from "./Timer";
 
 const root = path.resolve("/");
 const cachedGlobFactory = new CachedGlobFactory();
@@ -24,7 +25,10 @@ export default function App() {
   const [cwd, setCwd] = useState(() => root);
   const [finished, setFinished] = useState(false);
 
+  const resetNow = useNowStore((state) => state.resetNow);
+
   useEffect(() => {
+    setInterval(resetNow, 1000);
     gitGlobber.on("cwd", (cwd) => setCwd(cwd));
 
     (async () => {
@@ -35,7 +39,7 @@ export default function App() {
     })();
   }, []);
 
-  const parts = useMemo(() => cwd.split(path.sep), [cwd]);
+  const parts = useMemo(() => [...new Set(cwd.split(path.sep))], [cwd]);
 
   const [selected, setSelected] = useState(0);
 
@@ -48,12 +52,17 @@ export default function App() {
       setSelected((selected) => Math.max(selected - 1, 0));
     } else if (input == "q") {
       setFinished(true);
+    }
+  });
+
+  useEffect(() => {
+    if (finished) {
       process.nextTick(() => {
         exit();
         process.nextTick(() => process.exit(0));
       });
     }
-  });
+  }, [finished]);
 
   useEffect(() => {
     setSelected((selected) => Math.min(selected, parts.length - 1));
@@ -116,7 +125,7 @@ function RenderPath({ selected, children: parts }) {
 
       <Box flexDirection="column" marginRight={1}>
         {parts.map((part, i) => (
-          <Text key={`${part}-${i}`}>57 seconds ago</Text>
+          <Timer key={`${part}-${i}`} />
         ))}
       </Box>
     </Box>
