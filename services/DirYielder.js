@@ -23,10 +23,7 @@ export class DirYielder {
       () => {},
       () => {}
     );
-    let aborted = false;
-    const promiseAbort = once(glob, "abort").then(() => {
-      aborted = true;
-    });
+    const promiseAbort = once(glob, "abort").then(() => {});
     const promiseMatch = on(glob, "match");
     while (true) {
       const dirName = await Promise.race([
@@ -34,10 +31,7 @@ export class DirYielder {
         promiseEnd,
         promiseAbort,
       ]);
-      if (aborted) {
-        debugger;
-      }
-      if (aborted || !dirName) {
+      if (glob.aborted || !dirName) {
         break;
       }
       yield new Dir(dirName, path.resolve(cwd, dirName));

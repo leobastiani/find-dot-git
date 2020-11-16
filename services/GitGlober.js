@@ -1,10 +1,11 @@
 import { EventEmitter } from "events";
 
 export class GitGlober extends EventEmitter {
-  constructor(dirYielder, gitChecker, ...args) {
+  constructor(dirYielder, gitChecker, cachedGlobFactory, ...args) {
     super(...args);
     this.dirYielder = dirYielder;
     this.gitChecker = gitChecker;
+    this.cachedGlobFactory = cachedGlobFactory;
   }
 
   async *glob(cwd) {
@@ -19,6 +20,9 @@ export class GitGlober extends EventEmitter {
     }
     for (const nextDir of dirs) {
       yield* this.glob(nextDir.path);
+      if (this.cachedGlobFactory.create(cwd).aborted) {
+        break;
+      }
     }
     this.emit("endCwd", cwd);
   }

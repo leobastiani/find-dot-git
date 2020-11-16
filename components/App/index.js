@@ -14,7 +14,8 @@ const cachedGlobFactory = new CachedGlobFactory();
 
 const gitGlobber = new GitGlober(
   new DirSkipYielder(new DirYielder(cachedGlobFactory), new DirSkipper()),
-  new GitChecker()
+  new GitChecker(),
+  cachedGlobFactory
 );
 
 export default function App() {
@@ -88,8 +89,11 @@ export default function App() {
 function RenderPath({ selected, children: parts }) {
   useInput((input, key) => {
     if (key.return) {
-      for (let i = parts.length - 1; i >= selected ; i--) {
-        cachedGlobFactory.create(path.join(...parts.slice(0, i))).abort();
+      const p = path.join(...parts.slice(0, selected + 1));
+      for (const storedPath in cachedGlobFactory.store) {
+        if (storedPath.startsWith(p)) {
+          cachedGlobFactory.store[storedPath].abort();
+        }
       }
     }
   });
