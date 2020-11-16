@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import figures from "figures";
 import { Box, Text, useApp, useInput, useStdin } from "ink";
 import React, { useEffect, useMemo, useState } from "react";
