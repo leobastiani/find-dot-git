@@ -7,12 +7,13 @@ import { DirYielder } from "../../services/DirYielder";
 import { GitChecker } from "../../services/GitChecker";
 import { GitGlober } from "../../services/GitGlober";
 import path from "path";
+import { CachedGlobFactory } from "../../services/CachedGlobFactory";
 
 const root = path.resolve("/");
+const cachedGlobFactory = new CachedGlobFactory();
 
-const dirSkipper = new DirSkipper();
 const gitGlobber = new GitGlober(
-  new DirSkipYielder(new DirYielder(), dirSkipper),
+  new DirSkipYielder(new DirYielder(cachedGlobFactory), new DirSkipper()),
   new GitChecker()
 );
 
@@ -87,7 +88,9 @@ export default function App() {
 function RenderPath({ selected, children: parts }) {
   useInput((input, key) => {
     if (key.return) {
-      dirSkipper.skipCwd.add(path.join(...selected));
+      for (let i = parts.length - 1; i >= selected ; i--) {
+        cachedGlobFactory.create(path.join(...parts.slice(0, i))).abort();
+      }
     }
   });
 

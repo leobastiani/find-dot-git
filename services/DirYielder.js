@@ -4,6 +4,10 @@ import path from "path";
 import { Dir } from "../models/Dir";
 
 export class DirYielder {
+  constructor(globFactory) {
+    this.globFactory = globFactory;
+  }
+
   getNextDirName(promiseMatch) {
     return promiseMatch.next().then(
       ({ value }) => value[0].replace(/\/?$/, ""),
@@ -12,28 +16,28 @@ export class DirYielder {
   }
 
   async *glob(cwd) {
-    const glob = new Glob("*/", {
-      root: cwd,
-      cwd,
-      silent: true,
-      strict: false,
-      symlinks: false,
-      follow: false,
-      realpath: true,
-    });
+    const glob = this.globFactory.create(cwd);
 
     glob.on("error", () => {});
     const promiseEnd = once(glob, "end").then(
       () => {},
       () => {}
     );
+    let aborted = false;
+    const promiseAbort = once(glob, "abort").then(() => {
+      aborted = true;
+    });
     const promiseMatch = on(glob, "match");
     while (true) {
       const dirName = await Promise.race([
         this.getNextDirName(promiseMatch),
         promiseEnd,
+        promiseAbort,
       ]);
-      if (!dirName) {
+      if (aborted) {
+        debugger;
+      }
+      if (aborted || !dirName) {
         break;
       }
       yield new Dir(dirName, path.resolve(cwd, dirName));
