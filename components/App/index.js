@@ -46,7 +46,10 @@ export default function App() {
       setSelected((selected) => Math.max(selected - 1, 0));
     } else if (input == "q") {
       setFinished(true);
-      process.nextTick(() => exit());
+      process.nextTick(() => {
+        exit();
+        process.nextTick(() => process.exit(0));
+      });
     }
   });
 
