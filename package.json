@@ -10,6 +10,7 @@
   "repository": "git@github.com:leobastiani/find-dot-git.git",
   "author": "Leonardo Guarnieri de Bastiani <leogbastiani@gmail.com>",
   "license": "GPL-3.0-or-later",
+  "bin": "index.js",
   "dependencies": {
     "@babel/core": "^7.12.3",
     "@babel/node": "^7.12.6",
