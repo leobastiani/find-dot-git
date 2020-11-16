@@ -1,5 +1,5 @@
 import figures from "figures";
-import { Box, Text, useInput } from "ink";
+import { Box, Text, useApp, useInput, useStdin } from "ink";
 import React, { useEffect, useMemo, useState } from "react";
 import { DirSkipper } from "../../services/DirSkipper";
 import { DirSkipYielder } from "../../services/DirSkipYielder";
@@ -37,13 +37,16 @@ export default function App() {
 
   const [selected, setSelected] = useState(0);
 
+  const { exit } = useApp();
+
   useInput((input, key) => {
     if (key.downArrow || key.rightArrow) {
       setSelected((selected) => Math.min(selected + 1, parts.length - 1));
-    }
-
-    if (key.leftArrow || key.upArrow) {
+    } else if (key.leftArrow || key.upArrow) {
       setSelected((selected) => Math.max(selected - 1, 0));
+    } else if (input == "q") {
+      setFinished(true);
+      process.nextTick(() => exit());
     }
   });
 
