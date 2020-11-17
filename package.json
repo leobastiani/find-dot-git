@@ -1,23 +1,23 @@
 {
   "name": "find-dot-git",
   "scripts": {
-    "start": "babel-node index.js",
+    "start": "babel-node src/index.js",
+    "build": "babel src -d dist",
     "dev": "nodemon --exec yarn start"
   },
   "version": "1.0.0",
   "description": "A user friendly finder for .git folders",
-  "main": "index.js",
+  "main": "src/index.js",
   "repository": "git@github.com:leobastiani/find-dot-git.git",
   "author": "Leonardo Guarnieri de Bastiani <leogbastiani@gmail.com>",
   "license": "GPL-3.0-or-later",
-  "bin": "./cli.js",
+  "bin": "./dist/index.js",
   "dependencies": {
     "@babel/core": "^7.12.3",
     "@babel/node": "^7.12.6",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-react": "^7.12.5",
-    "@babel/register": "^7.12.1",
     "dayjs": "^1.9.6",
     "figures": "^3.2.0",
     "glob": "^7.1.6",
@@ -30,6 +30,7 @@
     "zustand": "^3.1.4"
   },
   "devDependencies": {
+    "@babel/cli": "^7.12.1",
     "nodemon": "^2.0.6"
   }
 }
