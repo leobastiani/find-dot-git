@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import "./controllers/args";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import duration from "dayjs/plugin/duration";
@@ -14,4 +15,4 @@ import React from "react";
 import { render } from "ink";
 import App from "./components/App";
 
-render(<App />);
+render(<App />, { exitOnCtrlC: false });

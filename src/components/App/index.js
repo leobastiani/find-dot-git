@@ -9,6 +9,9 @@ import { GitGlober } from "../../services/GitGlober";
 import path from "path";
 import { CachedGlobFactory } from "../../services/CachedGlobFactory";
 import Timer, { useNowStore } from "./Timer";
+import usePrevious from "../../hooks/usePrevious";
+import useSetFor from "../../hooks/useSetFor";
+import args from "../../controllers/args";
 
 const root = path.resolve("/");
 const cachedGlobFactory = new CachedGlobFactory();
@@ -32,8 +35,10 @@ export default function App() {
     gitGlobber.on("cwd", (cwd) => setCwd(cwd));
 
     (async () => {
-      for await (const gitDir of gitGlobber.glob(root)) {
-        setOutput((output) => [...output, gitDir.path]);
+      for (const path of args["<paths>"]) {
+        for await (const gitDir of gitGlobber.glob(path)) {
+          setOutput((output) => [...output, gitDir.path]);
+        }
       }
       setFinished(true);
     })();
@@ -44,16 +49,6 @@ export default function App() {
   const [selected, setSelected] = useState(0);
 
   const { exit } = useApp();
-
-  useInput((input, key) => {
-    if (key.downArrow || key.rightArrow) {
-      setSelected((selected) => Math.min(selected + 1, parts.length - 1));
-    } else if (key.leftArrow || key.upArrow) {
-      setSelected((selected) => Math.max(selected - 1, 0));
-    } else if (input == "q") {
-      setFinished(true);
-    }
-  });
 
   useEffect(() => {
     if (finished) {
@@ -68,6 +63,45 @@ export default function App() {
     setSelected((selected) => Math.min(selected, parts.length - 1));
   }, [parts]);
 
+  const skipDirDisplay = useMemo(
+    () => path.resolve("/", ...parts.slice(0, selected + 1)),
+    [parts, selected]
+  );
+
+  const previousSelected = usePrevious(selected);
+  const [enabled, setEnabledFor] = useSetFor(true);
+  useEffect(() => {
+    if (selected == previousSelected) {
+      setEnabledFor(false, 2000);
+    }
+  }, [selected, skipDirDisplay]);
+
+  const { setRawMode } = useStdin();
+
+  useEffect(() => {
+    setRawMode(true);
+
+    return () => {
+      setRawMode(false);
+    };
+  });
+
+  useInput((input, key) => {
+    if (key.downArrow || key.rightArrow) {
+      setSelected((selected) => Math.min(selected + 1, parts.length - 1));
+    } else if (key.leftArrow || key.upArrow) {
+      setSelected((selected) => Math.max(selected - 1, 0));
+    } else if (input == "q" || (input == "c" && key.ctrl)) {
+      setFinished(true);
+    } else if (key.return && enabled) {
+      for (const storedPath in cachedGlobFactory.store) {
+        if (storedPath.startsWith(skipDirDisplay)) {
+          cachedGlobFactory.store[storedPath].abort();
+        }
+      }
+    }
+  });
+
   if (finished) {
     return <Text>{output.join("\n")}</Text>;
   }
@@ -75,20 +109,22 @@ export default function App() {
   return (
     <Box flexDirection="column">
       <Box borderStyle="round" paddingLeft={1} paddingRight={1}>
-        <Box flexGrow={1}>
-          <Text>find-dot-git: {selected}</Text>
+        <Box flexGrow={1} flexDirection="column">
+          <Text>find-dot-git</Text>
+          <Text>
+            {enabled ? (
+              <>Press ENTER to skip {skipDirDisplay}</>
+            ) : (
+              <>Waiting...</>
+            )}
+          </Text>
         </Box>
         <Text>Status: </Text>
         <Text color="green">Running {figures.circleFilled}</Text>
       </Box>
 
       <Box borderStyle="round" paddingLeft={1} paddingRight={1}>
-        <Text>Output:</Text>
-        <Box flexDirection="column" paddingLeft={1}>
-          {output.map((path) => (
-            <Text key={path}>{path}</Text>
-          ))}
-        </Box>
+        <Text>Output: {output.join(", ")}</Text>
       </Box>
 
       <RenderPath selected={selected}>{parts}</RenderPath>
@@ -96,17 +132,6 @@ export default function App() {
   );
 }
 function RenderPath({ selected, children: parts }) {
-  useInput((input, key) => {
-    if (key.return) {
-      const p = path.join(...parts.slice(0, selected + 1));
-      for (const storedPath in cachedGlobFactory.store) {
-        if (storedPath.startsWith(p)) {
-          cachedGlobFactory.store[storedPath].abort();
-        }
-      }
-    }
-  });
-
   return (
     <Box borderStyle="round" paddingLeft={1} paddingRight={1}>
       <Box flexDirection="column" flexGrow={1} marginRight={1}>

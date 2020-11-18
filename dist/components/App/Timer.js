@@ -16,8 +16,6 @@ var _zustand = _interopRequireDefault(require("zustand"));
 
 var _TimeDiff = _interopRequireDefault(require("../TimeDiff"));
 
-var _jsxFileName = "C:\\Users\\Leonardo\\Desktop\\find-dot-git\\src\\components\\App\\Timer.js";
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
@@ -45,12 +43,6 @@ function Timer() {
   }, []);
   return /*#__PURE__*/_react["default"].createElement(_TimeDiff["default"], {
     start: start,
-    end: now,
-    __self: this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 16,
-      columnNumber: 10
-    }
+    end: now
   });
 }

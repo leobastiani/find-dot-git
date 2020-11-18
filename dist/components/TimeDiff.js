@@ -13,8 +13,6 @@ var _ink = require("ink");
 
 var _javascriptTimeAgo = _interopRequireDefault(require("javascript-time-ago"));
 
-var _jsxFileName = "C:\\Users\\Leonardo\\Desktop\\find-dot-git\\src\\components\\TimeDiff.js";
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
@@ -24,12 +22,5 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function TimeDiff(_ref) {
   var start = _ref.start,
       end = _ref.end;
-  return /*#__PURE__*/_react["default"].createElement(_ink.Text, {
-    __self: this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 7,
-      columnNumber: 5
-    }
-  }, new _javascriptTimeAgo["default"]().format(Date.now() - (end.getTime() - start.getTime()), "round"));
+  return /*#__PURE__*/_react["default"].createElement(_ink.Text, null, new _javascriptTimeAgo["default"]().format(Date.now() - (end.getTime() - start.getTime()), "round"));
 }
