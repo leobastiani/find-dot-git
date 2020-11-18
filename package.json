@@ -12,12 +12,8 @@
   "author": "Leonardo Guarnieri de Bastiani <leogbastiani@gmail.com>",
   "license": "GPL-3.0-or-later",
   "bin": "./dist/index.js",
+  "keywords": ["cli", "git", "file-finder"],
   "dependencies": {
-    "@babel/core": "^7.12.3",
-    "@babel/node": "^7.12.6",
-    "@babel/plugin-proposal-class-properties": "^7.12.1",
-    "@babel/preset-env": "^7.12.1",
-    "@babel/preset-react": "^7.12.5",
     "dayjs": "^1.9.6",
     "docopt": "^0.6.2",
     "figures": "^3.2.0",
@@ -27,11 +23,15 @@
     "javascript-time-ago": "^2.3.3",
     "lodash": "^4.17.20",
     "react": "^17.0.1",
-    "react-time-ago": "^6.2.1",
     "zustand": "^3.1.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/preset-react": "^7.12.5",
+    "@babel/node": "^7.12.6",
     "nodemon": "^2.0.6"
   }
 }

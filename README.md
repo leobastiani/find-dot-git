@@ -14,7 +14,7 @@
 You need to install [Node.js](https://nodejs.org/en/download/) first, then install the tool globally using this command:
 
 ```bash
-npm install -g https://github.com/leobastiani/find-dot-git
+npm install -g find-dot-git
 ```
 
 # Getting Started
