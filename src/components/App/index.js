@@ -44,7 +44,7 @@ export default function App() {
     })();
   }, []);
 
-  const parts = useMemo(() => [...new Set(cwd.split(path.sep))], [cwd]);
+  const parts = useMemo(() => cwd.split(/[\/\\]+/), [cwd]);
 
   const [selected, setSelected] = useState(0);
 
@@ -136,7 +136,7 @@ function RenderPath({ selected, children: parts }) {
     <Box borderStyle="round" paddingLeft={1} paddingRight={1}>
       <Box flexDirection="column" flexGrow={1} marginRight={1}>
         {parts.map((part, i) => (
-          <Text key={`${part}-${i}`}>{part}</Text>
+          <Text key={`${part}-${i}`}>{part == '' ? ' ' : part}</Text>
         ))}
       </Box>
 
