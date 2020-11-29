@@ -229,7 +229,7 @@ function App() {
     }))();
   }, []);
   var parts = (0, _react.useMemo)(function () {
-    return _toConsumableArray(new Set(cwd.split(_path2["default"].sep)));
+    return cwd.split(/[\/\\]+/);
   }, [cwd]);
 
   var _useState7 = (0, _react.useState)(0),
@@ -338,7 +338,7 @@ function RenderPath(_ref2) {
   }, parts.map(function (part, i) {
     return /*#__PURE__*/_react["default"].createElement(_ink.Text, {
       key: "".concat(part, "-").concat(i)
-    }, part);
+    }, part == '' ? ' ' : part);
   })), /*#__PURE__*/_react["default"].createElement(_ink.Box, {
     flexDirection: "column",
     marginRight: 3
