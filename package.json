@@ -5,7 +5,7 @@
     "build": "rimraf dist && babel src -d dist",
     "dev": "nodemon --exec yarn start"
   },
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A user friendly finder for .git folders",
   "main": "src/index.js",
   "repository": "git@github.com:leobastiani/find-dot-git.git",
