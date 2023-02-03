@@ -1568,7 +1568,7 @@ define-property@^2.0.2:
 docopt@^0.6.2:
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/docopt/-/docopt-0.6.2.tgz#b28e9e2220da5ec49f7ea5bb24a47787405eeb11"
-  integrity sha1-so6eIiDaXsSffqW7JKR3h0Be6xE=
+  integrity sha512-NqTbaYeE4gA/wU1hdKFdU+AFahpDOpgGLzHP42k6H6DKExJd0A55KEVWYhL9FEmHmgeLvEU2vuKXDuU+4yToOw==
 
 dot-prop@^5.2.0:
   version "5.3.0"

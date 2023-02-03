@@ -18,6 +18,12 @@
     "file-finder"
   ],
   "dependencies": {
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.9",
+    "@babel/node": "^7.12.6",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/preset-react": "^7.12.5",
     "@babel/runtime": "^7.12.5",
     "dayjs": "^1.9.6",
     "docopt": "^0.6.2",
@@ -31,12 +37,6 @@
     "zustand": "^3.1.4"
   },
   "devDependencies": {
-    "@babel/cli": "^7.12.1",
-    "@babel/core": "^7.12.9",
-    "@babel/node": "^7.12.6",
-    "@babel/plugin-proposal-class-properties": "^7.12.1",
-    "@babel/preset-env": "^7.12.1",
-    "@babel/preset-react": "^7.12.5",
     "nodemon": "^2.0.6",
     "rimraf": "^3.0.2"
   }
